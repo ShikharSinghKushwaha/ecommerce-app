@@ -1,0 +1,84 @@
+.categories-container{
+     width: 100%;
+    margin-top: 30px;
+}
+
+.categories_image{
+    position: relative;
+    height: 400px;
+    width: 300px;
+}
+
+.cat-name{
+    position: absolute;
+    bottom: 0;
+    left: 10px;
+    color: white;
+}
+.main-image{
+    width: 100%;
+    height: 100%;
+}
+
+.electronics{
+    height: 300px;
+    
+}
+
+.comp{
+    width: 20%;
+}
+.parent{
+    
+ display: flex;
+ justify-content: space-around;
+ align-items: center;
+ gap: 10px;
+}
+
+@media(max-width:300px){
+    
+    .comp{
+        width: 20% auto;
+    }
+    .parent{
+        flex-wrap: wrap;
+        display: grid;
+        grid-template-columns:  auto auto;
+        
+    }
+
+.categories_image{
+    position: relative;
+    height: 150px  !important;
+    width: 150px;
+}
+.cat-name{
+    position: absolute;
+    font-size: 13px;
+}
+}
+
+
+
+
+
+@media(max-width:700px){
+    
+    .parent{
+        flex-wrap: wrap;
+        display: grid;
+       grid-template-columns:  auto auto;
+        gap:2px;
+    }
+.categories_image{
+    position: relative;
+    height: 300px;
+    width: 200px;
+}
+.cat-name{
+    position: absolute;
+    font-size: 13px;
+}
+}
+
