@@ -1,115 +1,102 @@
-import React, { useState , useEffect, createContext, useContext } from 'react'
-import axios from 'axios'
-import  { useParams , useLocation} from 'react-router-dom'
-import './SingleProduct.css'
-import Cart from './Cart'
+import React, { useState, useEffect} from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+import "./SingleProduct.css";
+import CartButton from "./CartButton";
+import { useSelector, useDispatch } from "react-redux";
+import { addCart } from "../features/featureSlice";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-export const CartContext = createContext();
 
-
-function SingleProductDetails() {
+function SingleProductDetails({ addToCartPage }) {
   const params = useParams();
-  const [ product, setProduct ]= useState([]);
-  const [ increase, setIncrease] = useState(1);
-  const location = useLocation();
+  const [product, setProduct] = useState([]);
+  const [increase, setIncrease] = useState(1);
 
-  
-  // console.log(params);
-// const  addToCart  = useContext(CartContext);
+  //const selector = useSelector();
+  const dispatch = useDispatch();
+
 
   let productId = params.id;
 
   useEffect(() => {
-    axios.get(`https://fakestoreapi.com/products/${productId}`)
-    .then(response => {
-      console.log(response.data);
-      setProduct(response.data)
-      
-    })
-  },[productId])
+    axios
+      .get(`https://fakestoreapi.com/products/${productId}`)
+      .then((response) => {
+        console.log(response.data);
+        setProduct(response.data);
+      });
+  }, [productId]);
 
- 
- 
-  const checkDisable = increase <= 1 ? 'disabled' : '';
- 
+  const checkDisable = increase <= 1 ? "disabled" : "";
+
   const increaseQty = () => {
-
     setIncrease(increase + 1);
-
-  }
+  };
 
   const decreaseQty = () => {
-    setIncrease(increase - 1 );
-  } 
+    setIncrease(increase - 1);
+  };
 
+  const addToCart = (id, product, img, price, quantity) => {
+    dispatch(addCart({ id, product, img, price, quantity: increase }));
+    toast.success('Added to the Cart', {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      });
+  };
 
-  const isCartPage = location.pathname === '/cart';
-  const [selectedProduct, setSelectedProduct] = useState(null)
-  
-
-  const addToCartPage = () => {
-
-    setSelectedProduct(productId);
-    setIncrease(increase);
-   //addLocal += localStorage.setItem('product',productId);
-    setProduct(product);
-  }
-
-
-  
   return (
-    <div> 
-      <div className='single-container'>
-       {/* {product.map((item) => ( */}
-        {/* <div> */}
-         <div className='single-image-image' >
-         <img src={product.image} className='main-image'/>
-       </div>
-       <div className='single-description'>
-         <h2>Id-{product.id}</h2>
-         <h1 className='heading'>{product.title}</h1>
-         <p className='banner-text'>{product.description}</p>
-       
-       <div className='button-container'>
-          <h4>Quantity</h4>
-          <div className='quantity'>
-            <label>
-              <input onClick={decreaseQty} type='button' value='-' disabled={checkDisable}/>
-            </label>
-            <h1 className='qty-number'>{increase}</h1>
-            <label>
-              <input onClick={increaseQty} type='button' value='+'/>
-            </label>
-       </div>
-       <h3>Price - {increase === 1 ? Math.round(product.price) : Math.round(product.price) * increase}</h3>
+    <div>
+      <div className="single-container">
+        <div className="single-image-image">
+          <img src={product.image} className="main-image" />
+        </div>
+        <div className="main-single-container">
+          <div className="single-description">
+            <h2>Id-{product.id}</h2>
+            <h1 className="heading">{product.title}</h1>
+            <p className="banner-text">{product.description}</p>
 
- 
+              <CartButton
+                decreaseQty={decreaseQty}
+                checkDisable={checkDisable}
+                increase={increase}
+                increaseQty={increaseQty}     
+                product={product.price}
+              />
+           
+            <div className="button-container">
+              <button
+                className="add_btn blinker-regular"
+                onClick={() =>
+                  //addToCartPage(product.id)
+                  addToCart(
+                    product.id,
+                    product.title,
+                    product.image,
+                    product.price,
+                    increase
+                  )
+                }
+              >
+                Add to Cart
+              </button>
+              <ToastContainer />
+             
+            </div>
+          </div>
+        </div>
       </div>
-  <div className='button-container'>
-      <button className='add_btn blinker-regular' 
-      onClick={ 
-      addToCartPage   
-      }>
-        Add to Cart</button>
-        <button className='add_btn buy-now blinker-regular' 
-      onClick={ 
-      addToCartPage   
-      }>
-       Buy Now</button>
-       </div>
-       </div>
-       {isCartPage ? 
-       
-       <CartContext.Provider value={[selectedProduct,increase,product]}>
-       
-      <Cart addToCart/>
-      </CartContext.Provider>
-       :null
-      }
-    
-             </div>
     </div>
-  )
+  );
 }
 
-export default SingleProductDetails
+export default SingleProductDetails;

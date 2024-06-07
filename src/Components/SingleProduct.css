@@ -5,8 +5,9 @@
     align-items: center;
     gap: 85px;
     justify-content: center;
-    height: 80vh;
+    height: 80vh auto;
     margin-top: 70px;
+    margin-bottom:30px;
 }
 .single-image-image{
     max-width:350px;
@@ -14,10 +15,11 @@
 }
 
 .single-description{
+    padding: 20px 40px;
     max-width: 400px;
     background-color: lightblue;
-    height: 100%;
-    padding: 0px 40px;
+    height: 100% auto;
+    /* padding: 0px 40px; */
     display: flex;
     align-items: flex-start;
     justify-content: center;
@@ -45,7 +47,7 @@
 .button-container{
     display:flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     width: 100%;
 }
 

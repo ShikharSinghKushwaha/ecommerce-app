@@ -29,7 +29,6 @@ function TopBar(){
 
                         </div>
 
-
 {menu && <div className=' small-screen'>
                             <NavLink to='/' className='nav-link blinker-regular'>Home</NavLink> 
                             <NavLink to="/categories/electronics"  activeClassName='active' className='nav-link blinker-regular'>Categories
